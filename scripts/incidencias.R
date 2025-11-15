@@ -97,8 +97,25 @@ yu_inc <- incidencia_completa (yucatan)
 za_inc <- incidencia_completa (zacatecas)
 
 
-## MAPA DE INCIDENCIA 
 
+## INCIDENCIA POR MES 
+# Añadir columna que indique el mes
+dg_inc_mes <- dg_inc %>% mutate(MES = month(FECHA_SIGN_SINTOMAS))
+
+# b) Pico de incidencia por mes 
+dg_pico <- dg_inc_mes %>% group_by(MES) %>%
+  summarise (max_dia = max(MES) ) #pico en oct
+
+
+
+
+## Histoframa 
+ggplot(dg_inc, aes(x = FECHA_SIGN_SINTOMAS, y = positivos)) +
+  geom_col(fill = "seagreen3") +
+  labs(title = "Incidencia diaria en Durango",
+       x = "Fecha", y = "Casos diarios")
+
+ 
 
 
 

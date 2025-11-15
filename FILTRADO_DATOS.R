@@ -4,6 +4,10 @@ library(tidyverse)
 library(dplyr)
 ##------------------------------------------------------------------------------
 dengue_datos <- read.csv("RAW DATA/dengue_abierto.csv")
+
+#Columna de fechas como as.Date
+dengue_datos$FECHA_SIGN_SINTOMAS <- as.Date(dengue_datos$FECHA_SIGN_SINTOMAS) 
+
 #-------------------------------------------------------------------------------
 # Filtrado de los datos por estado
 #-------------------------------------------------------------------------------
@@ -130,7 +134,7 @@ colima <- dengue_datos %>% filter(ENTIDAD_RES == "6")
 
 # CHIAPAS
 chiapas <- dengue_datos %>% filter(ENTIDAD_RES == "7")
-save(chiapas, file = "03_out/chiapas.RData")
+#save(chiapas, file = "03_out/chiapas.RData")
 
 # CHIHUAHUA
 # No hay casos regitrados:
