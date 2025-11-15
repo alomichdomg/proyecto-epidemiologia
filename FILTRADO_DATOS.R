@@ -3,7 +3,7 @@ library(tidyr)
 library(tidyverse)
 library(dplyr)
 ##------------------------------------------------------------------------------
-dengue_datos <- read_csv("RAW DATA/dengue_abierto.csv")
+dengue_datos <- read.csv("RAW DATA/dengue_abierto.csv")
 #-------------------------------------------------------------------------------
 # Filtrado de los datos por estado
 #-------------------------------------------------------------------------------
