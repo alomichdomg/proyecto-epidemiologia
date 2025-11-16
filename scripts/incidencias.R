@@ -104,23 +104,52 @@ ggplot (dg_inc, aes(x = FECHA_SIGN_SINTOMAS, y = positivos)) +
   labs(title = "Incidencia diaria en Durango",
        x = "Fecha", y = "Casos diarios")
 
-## INCIDENCIA POR MES 
-# Añadir columna que indique el mes
 
-dg_inc <- dg_inc %>% mutate (MES = month(FECHA_SIGN_SINTOMAS))
-#View (dg_inc)
+###########          INCIDENCIA POR MES    ###############   
 
-# Inc. total por mes 
-dg_mes <- dura_inc_mes %>% group_by (MES) %>%
-  summarise (inc_mes = sum (positivos) )
-dg_mes
+incidencia_mes <- function (estado_inc, codigo_estado) {
+  #Lista para que se añadan las inciedncias 
+  lista_incidencias <- list()
+  #Añdir columna que indique el mes con month 
+  estado_inc <- estado_inc %>% mutate (MES = month (FECHA_SIGN_SINTOMAS))
+  #Incidencia por mes -- el conteo total + añadir el nombre del estado 
+  inc_mes  <- estado_inc %>% group_by (MES) %>%
+    summarise (inc_mes = sum (positivos) ) %>%
+    mutate (ENTIDAD = codigo_estado ) # le añadí para no confundirme con el estado
+  
+  return (inc_mes)
+}
+
+#Prueba: estados_inc <- incidencia_mes(dg_inc, 10)
+
+# Relizar una lista con todas las incidencias
+estado_lista <- list( dg_inc, gto_inc, gr_inc, hg_inc, ja_inc, em_inc, mi_inc, mo_inc,
+  nt_inc, nl_inc, oa_inc, pu_inc, qro_inc, qroo_inc, slp_inc, sin_inc,
+  so_inc, tb_inc, tm_inc, tl_inc, vz_inc, yu_inc, za_inc )
+
+#Aplicar la función de incidencia por mes a cada uno de los estadoa 
+df_estados_inc <- data.frame()
+
+codigos_estados <- 10:32
+
+for (i in 1:length(estado_lista)) {
+  df_estados_inc <- bind_rows ( #bind rows permite que los df se añadan y NO se reescriban 
+    df_estados_inc,
+    incidencia_mes (estado_lista [[i]], codigos_estados[i])
+  )
+}
+
+df_estados_inc #la incidencia por cada uno de los eatados del país
 
 
+############# MAPEO DE INCIDENCIA  #############
+#install.packages ("sf")
+#install.packages ("mapview")
+
+library (sf)
+library (mapview)
 
 
-
-dura <- dengue_datos %>% filter(ENTIDAD_RES == "10", ESTATUS_CASO == "2")
-dura_inc <-  incidencia_completa(dura)
 
  
 
