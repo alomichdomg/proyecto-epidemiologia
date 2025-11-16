@@ -146,8 +146,8 @@ df_estados_inc #la incidencia por cada uno de los eatados del país
 #install.packages ("sf")
 #install.packages ("mapview")
 
-library (sf)
-library (mapview)
+#library (sf)
+#library (mapview)
 
 
 
