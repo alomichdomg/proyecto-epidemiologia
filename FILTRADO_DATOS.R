@@ -146,3 +146,4 @@ chihuahua <- dengue_datos %>% filter(ENTIDAD_RES == "8")
 ciudad.mexico <- dengue_datos %>% filter(ENTIDAD_RES == "9")
 
 #-------------------------------------------------------------------------------
+
