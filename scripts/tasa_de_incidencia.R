@@ -64,12 +64,15 @@ casos_totales <- tibble( entidad_federativa = c (
 
 #ahora sacar la tasa de incidencia :)
 library(dplyr)
+poblacion_estatal <- poblacion_estatal %>%
+  rename(entidad_federativa = `Entidad federativa`) #le cambie el nombre pq no lo encontraba el wey
+
 
 incidencia_por_año<- poblacion_estatal %>%
   left_join(casos_totales, by = "entidad_federativa") %>%
   mutate(
     casos = replace_na(casos, 0),
-    incidencia_multiplicada = (casos / Total) * 100000) %>%
+    tasa_de_incidencia_anual = (casos / Total) * 100000) %>%
   mutate(
     incidencia = (casos )
   )
@@ -77,6 +80,7 @@ incidencia_por_año<- poblacion_estatal %>%
 view(incidencia_por_año)
 
 
+ 
 ########################
 interpretacion<- paste(
    
@@ -95,3 +99,75 @@ grafica_inc<- ggplot(incidencia_por_año, aes (x=entidad_federativa, y=incidenci
                                                     y= "Incedencia por cada 100,000 habitantes")+
   theme(axis.text.x = element_text( angle= 65, hjust=1))
 grafica_inc
+
+
+
+#################################
+#Incidencia por mes 
+
+#######deitamos la funcion de julie pq a mi si me importa que tenga el nombre y no el codigo sjsjs
+incidencia_mes_con_nombre <- function (estado_inc, nombre_estado) {
+ 
+  #Añdir columna que indique el mes con month 
+  estado_inc <- estado_inc %>% 
+    mutate (MES = as.numeric (format (FECHA_SIGN_SINTOMAS, "%m")))
+  inc_mes_n  <- estado_inc %>%
+    group_by (MES) %>%
+    summarise (inc_mes = sum (positivos, na.rm=TRUE), .groups = "drop" ) %>%
+    mutate (ENTIDAD = as.character(nombre_estado ) )
+  
+  return (inc_mes_n)
+}
+
+
+############
+nombres_de_estados <- c(
+  "Durango", "Guanajuato", "Guerrero", "Hidalgo", "Jalisco",
+  "Estado de Mexico", "Michoacan de Ocampo", "Morelos", "Nayarit",
+  "Nuevo Leon", "Oaxaca", "Puebla", "Queretaro", "Quintana Roo",
+  "San Luis Potosi", "Sinaloa", "Sonora", "Tabasco", "Tamaulipas",
+  "Tlaxcala", "Veracruz de Ignacio de la Llave", "Yucatan", "Zacatecas"
+)
+
+
+################################
+#aplicar la función
+
+incidencia_mensual<- data.frame ()
+for (i in 1:length(estado_lista)) {
+  incidencia_mensual <- bind_rows ( #bind rows permite que los df se añadan y NO se reescriban 
+   incidencia_mensual,
+    incidencia_mes_con_nombre (estado_lista [[i]], nombres_de_estados[i])
+  )
+}
+
+incidencia_mensual
+########
+
+#ahora calcular la tasa
+incidencia_mensual <- incidencia_mensual %>%
+  mutate(ENTIDAD = as.character(ENTIDAD))
+
+poblacion_estatal <- poblacion_estatal %>%
+  mutate(entidad_federativa = as.character(entidad_federativa))
+
+
+incidencia_mensual_tasa <- incidencia_mensual %>%
+  left_join(poblacion_estatal, by = c("ENTIDAD" = "entidad_federativa")) %>%
+  mutate(
+    incidencia_mensual = (inc_mes / Total) * 100000
+  )
+incidencia_mensual_tasa
+##########################
+
+interpretacion_mensual <- paste(
+  round(incidencia_mensual_tasa$incidencia_mensual, 0),
+  "de cada 100,000 habitantes tuvieron dengue en el mes",
+  incidencia_mensual_tasa$MES,
+  "en",
+  incidencia_mensual_tasa$ENTIDAD
+)
+
+interpretacion_mensual
+
+
