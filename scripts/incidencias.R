@@ -149,7 +149,7 @@ df_estados_inc #la incidencia por cada uno de los eatados del país
 #library (sf)
 #library (mapview)
 
-
+mapview()
 
  
 
