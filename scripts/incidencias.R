@@ -27,93 +27,100 @@ incidencia_completa <- function (estado) {
 
 ###### INCIDENCIA COMPLETA POR ESTADO   ######
 
-#Durango
+# DURANGO
 dg_inc <- incidencia_completa (durango)
 
-#Guanajuato 
+# GUANAJUATO  
 gto_inc <- incidencia_completa (guanajuato)
 
-#Guerrero
+# GUERRERO 
 gr_inc <- incidencia_completa(guerrero)
 
-#Hidalgo 
+# HIDALGO  
 hg_inc <- incidencia_completa(hidalgo)
 
-#Jalisco
+# JALISCO 
 ja_inc <- incidencia_completa(jalisco)
 
-#México 
+# MÉXICO  
 em_inc <- incidencia_completa(mexico.filtrado)
 
-#Michoacán
+# MICHOACAN 
 mi_inc <- incidencia_completa(michoacan)
 
-#Morelos
+# MORELOS 
 mo_inc <- incidencia_completa(morelos)
 
-#Nayarit 
+# NAYARIT  
 nt_inc <- incidencia_completa(nayarit)
 
-#Nuevo León
+# NUEVO LEON
 nl_inc <- incidencia_completa(nuevo.leon)
 
-#Oaxaca
+# OAXACA 
 oa_inc <- incidencia_completa(oaxaca)
 
-#Puebla
+# PUEBLA 
 pu_inc <-incidencia_completa(puebla)
 
-#Querétaro
+# QUERETARO 
 qro_inc <- incidencia_completa(queretaro)
 
-#Quintana Roo
+# Q. ROO
 qroo_inc <- incidencia_completa (quintana.roo)
 
-#San Luis Potosí 
+# SAN LUIS POTOSI 
 slp_inc <- incidencia_completa(san.luis.potosi)
 
-#Sinaloa 
+# SINALOA  
 sin_inc <- incidencia_completa(sinaloa)
 
-#Sonora
+# SONORA 
 so_inc <- incidencia_completa (sonora)
 
-#Tabasco 
+# TABASCO  
 tb_inc <- incidencia_completa(tabasco)
 
-#Tamaulipas 
+# TAMAULIPAS  
 tm_inc <- incidencia_completa(tamaulipas)
 
-#Tlaxcala
+# TLAXCALA 
 tl_inc <- incidencia_completa(tlaxcala)
 
-#Veracruz 
+# VERACRUZ  
 vz_inc <- incidencia_completa(veracruz)
 
-#Yucatán 
+# YUCATAN  
 yu_inc <- incidencia_completa (yucatan)
 
-#Zacatecas
+# ZACATECAS 
 za_inc <- incidencia_completa (zacatecas)
 
 
+# Si se quiere graficar
+#Histograma de casos 
+ggplot (dg_inc, aes(x = FECHA_SIGN_SINTOMAS, y = positivos)) +
+  geom_col (fill = "seagreen3") +
+  labs(title = "Incidencia diaria en Durango",
+       x = "Fecha", y = "Casos diarios")
 
 ## INCIDENCIA POR MES 
 # Añadir columna que indique el mes
-dg_inc_mes <- dg_inc %>% mutate(MES = month(FECHA_SIGN_SINTOMAS))
 
-# b) Pico de incidencia por mes 
-dg_pico <- dg_inc_mes %>% group_by(MES) %>%
-  summarise (max_dia = max(MES) ) #pico en oct
+dg_inc <- dg_inc %>% mutate (MES = month(FECHA_SIGN_SINTOMAS))
+#View (dg_inc)
+
+# Inc. total por mes 
+dg_mes <- dura_inc_mes %>% group_by (MES) %>%
+  summarise (inc_mes = sum (positivos) )
+dg_mes
 
 
 
 
-## Histoframa 
-ggplot(dg_inc, aes(x = FECHA_SIGN_SINTOMAS, y = positivos)) +
-  geom_col(fill = "seagreen3") +
-  labs(title = "Incidencia diaria en Durango",
-       x = "Fecha", y = "Casos diarios")
+
+dura <- dengue_datos %>% filter(ENTIDAD_RES == "10", ESTATUS_CASO == "2")
+dura_inc <-  incidencia_completa(dura)
 
  
 
