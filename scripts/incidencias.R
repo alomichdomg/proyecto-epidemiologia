@@ -27,78 +27,131 @@ incidencia_completa <- function (estado) {
 
 ###### INCIDENCIA COMPLETA POR ESTADO   ######
 
-#Durango
+# DURANGO
 dg_inc <- incidencia_completa (durango)
 
-#Guanajuato 
+# GUANAJUATO  
 gto_inc <- incidencia_completa (guanajuato)
 
-#Guerrero
+# GUERRERO 
 gr_inc <- incidencia_completa(guerrero)
 
-#Hidalgo 
+# HIDALGO  
 hg_inc <- incidencia_completa(hidalgo)
 
-#Jalisco
+# JALISCO 
 ja_inc <- incidencia_completa(jalisco)
 
-#México 
+# MÉXICO  
 em_inc <- incidencia_completa(mexico.filtrado)
 
-#Michoacán
+# MICHOACAN 
 mi_inc <- incidencia_completa(michoacan)
 
-#Morelos
+# MORELOS 
 mo_inc <- incidencia_completa(morelos)
 
-#Nayarit 
+# NAYARIT  
 nt_inc <- incidencia_completa(nayarit)
 
-#Nuevo León
+# NUEVO LEON
 nl_inc <- incidencia_completa(nuevo.leon)
 
-#Oaxaca
+# OAXACA 
 oa_inc <- incidencia_completa(oaxaca)
 
-#Puebla
+# PUEBLA 
 pu_inc <-incidencia_completa(puebla)
 
-#Querétaro
+# QUERETARO 
 qro_inc <- incidencia_completa(queretaro)
 
-#Quintana Roo
+# Q. ROO
 qroo_inc <- incidencia_completa (quintana.roo)
 
-#San Luis Potosí 
+# SAN LUIS POTOSI 
 slp_inc <- incidencia_completa(san.luis.potosi)
 
-#Sinaloa 
+# SINALOA  
 sin_inc <- incidencia_completa(sinaloa)
 
-#Sonora
+# SONORA 
 so_inc <- incidencia_completa (sonora)
 
-#Tabasco 
+# TABASCO  
 tb_inc <- incidencia_completa(tabasco)
 
-#Tamaulipas 
+# TAMAULIPAS  
 tm_inc <- incidencia_completa(tamaulipas)
 
-#Tlaxcala
+# TLAXCALA 
 tl_inc <- incidencia_completa(tlaxcala)
 
-#Veracruz 
+# VERACRUZ  
 vz_inc <- incidencia_completa(veracruz)
 
-#Yucatán 
+# YUCATAN  
 yu_inc <- incidencia_completa (yucatan)
 
-#Zacatecas
+# ZACATECAS 
 za_inc <- incidencia_completa (zacatecas)
 
 
-## MAPA DE INCIDENCIA 
+# Si se quiere graficar
+#Histograma de casos 
+ggplot (dg_inc, aes(x = FECHA_SIGN_SINTOMAS, y = positivos)) +
+  geom_col (fill = "seagreen3") +
+  labs(title = "Incidencia diaria en Durango",
+       x = "Fecha", y = "Casos diarios")
 
+
+###########          INCIDENCIA POR MES    ###############   
+
+incidencia_mes <- function (estado_inc, codigo_estado) {
+  #Lista para que se añadan las inciedncias 
+  lista_incidencias <- list()
+  #Añdir columna que indique el mes con month 
+  estado_inc <- estado_inc %>% mutate (MES = month (FECHA_SIGN_SINTOMAS))
+  #Incidencia por mes -- el conteo total + añadir el nombre del estado 
+  inc_mes  <- estado_inc %>% group_by (MES) %>%
+    summarise (inc_mes = sum (positivos) ) %>%
+    mutate (ENTIDAD = codigo_estado ) # le añadí para no confundirme con el estado
+  
+  return (inc_mes)
+}
+
+#Prueba: estados_inc <- incidencia_mes(dg_inc, 10)
+
+# Relizar una lista con todas las incidencias
+estado_lista <- list( dg_inc, gto_inc, gr_inc, hg_inc, ja_inc, em_inc, mi_inc, mo_inc,
+  nt_inc, nl_inc, oa_inc, pu_inc, qro_inc, qroo_inc, slp_inc, sin_inc,
+  so_inc, tb_inc, tm_inc, tl_inc, vz_inc, yu_inc, za_inc )
+
+#Aplicar la función de incidencia por mes a cada uno de los estadoa 
+df_estados_inc <- data.frame()
+
+codigos_estados <- 10:32
+
+for (i in 1:length(estado_lista)) {
+  df_estados_inc <- bind_rows ( #bind rows permite que los df se añadan y NO se reescriban 
+    df_estados_inc,
+    incidencia_mes (estado_lista [[i]], codigos_estados[i])
+  )
+}
+
+df_estados_inc #la incidencia por cada uno de los eatados del país
+
+
+############# MAPEO DE INCIDENCIA  #############
+#install.packages ("sf")
+#install.packages ("mapview")
+
+#library (sf)
+#library (mapview)
+
+mapview()
+
+ 
 
 
 
