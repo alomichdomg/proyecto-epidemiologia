@@ -120,6 +120,7 @@ incidencia_mes <- function (estado_inc, codigo_estado) {
   return (inc_mes)
 }
 
+
 #Prueba: estados_inc <- incidencia_mes(dg_inc, 10)
 
 # Relizar una lista con todas las incidencias
