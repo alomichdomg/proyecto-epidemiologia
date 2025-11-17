@@ -106,6 +106,12 @@ grafica_inc<- ggplot(incidencia_por_año, aes (x=entidad_federativa, y=incidenci
   theme(axis.text.x = element_text( angle= 65, hjust=1))
 grafica_inc
 
+grafica_inc_2<- ggplot(incidencia_por_año, aes (x=entidad_federativa, y=tasa_de_incidencia_anual))+
+  geom_bar(stat = "identity", fill= "steelblue") + labs( title = "Incidencia de dengue por entidades federativas " ,
+                                                         x="ENTIDAD FEDERATIVA",
+                                                         y= "Incedencia por cada 100,000 habitantes")+
+  theme(axis.text.x = element_text( angle= 65, hjust=1))
+grafica_inc_2
 
 
 #################################
@@ -164,6 +170,13 @@ incidencia_mensual_tasa <- incidencia_mensual %>%
     incidencia_mensual = (inc_mes / Total) * 100000
   )
 incidencia_mensual_tasa
+
+grafica_inc_3<- ggplot(incidencia_mensual_tasa, aes (x=ENTIDAD, y=incidencia_mensual))+
+  geom_bar(stat = "identity", fill= "steelblue") + labs( title = "Tasa de incidencia de dengue mensual" ,
+                                                         x="ENTIDAD FEDERATIVA",
+                                                         y= "Incedencia por cada 100,000 habitantes")+
+  theme(axis.text.x = element_text( angle= 65, hjust=1))
+grafica_inc_3
 ##########################
 
 interpretacion_mensual <- paste(

@@ -130,7 +130,6 @@ estado_lista <- list( dg_inc, gto_inc, gr_inc, hg_inc, ja_inc, em_inc, mi_inc, m
 
 #Aplicar la función de incidencia por mes a cada uno de los estadoa 
 df_estados_inc <- data.frame()
-
 codigos_estados <- 10:32
 
 for (i in 1:length(estado_lista)) {
@@ -143,12 +142,57 @@ for (i in 1:length(estado_lista)) {
 df_estados_inc #la incidencia por cada uno de los eatados del país
 
 
+# as.integer(codigo_nombre)-> c
+codigo_nombre <- c("DURANGO",
+                   "GUANAJUATO",
+                   "GUERRERO",
+                   "HIDALGO",
+                   "JALISCO",
+                   "MÉXICO",
+                   "MICHOACÁN",
+                   "MORELOS",
+                   "NAYARIT",
+                   "NUEVO LEON",
+                   "OAXACA",
+                   "PUEBLA",
+                   "QUERÉTARO",
+                   "QUINTANA",
+                   "SAN LUIS POTOSI",
+                   "SINALOA",
+                   "SONORA",
+                   "TABASCO",
+                   "TAMAULIPAS",
+                   "TLAXCALA",
+                   "VERACRUZ",
+                   "YUCATÁN",
+                   "ZACATECAS"
+)
+
+
+
+
+
+
+ggplot(df_estados_inc, 
+       aes(x = MES, 
+           y = inc_mes, 
+           group = ENTIDAD,
+           color = as.factor(ENTIDAD))) +
+  geom_line(linewidth =  1) +
+  geom_point() +
+  labs(x = "Mes",
+       y = "Incidencia mensual",
+       color = "Entidad") +
+  theme_minimal()
+
+
+
 ############# MAPEO DE INCIDENCIA  #############
 #install.packages ("sf")
-#install.packages ("mapview")
+install.packages ("mapview")
 
-#library (sf)
-#library (mapview)
+library (sf)
+library (mapview)
 
 mapview()
 
