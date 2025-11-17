@@ -79,10 +79,11 @@ incidencia_por_año<- poblacion_estatal %>%
 
 view(incidencia_por_año)
 
+incidencia_por_año$incidencia
 
  
 ########################
-interpretacion<- paste(
+interpretacion <- paste(
    
   round(incidencia_por_año$incidencia_multiplicada, 0), "de cada 100,000 habitantes tuvieron dengue durante 2025 en ", incidencia_por_año$entidad_federativa) #roud es para que redonde pero le dije q me dejara solo con nuemros enteros
 
