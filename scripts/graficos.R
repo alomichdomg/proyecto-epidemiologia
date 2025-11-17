@@ -30,7 +30,7 @@ estado <- "Nayarit"
 nt_inc2 <- cbind(estado, nt_inc)
 
 estado <- "Nuevo León"
-mo_inc2 <- cbind(estado, mo_inc)
+nl_inc2 <- cbind(estado, nl_inc)
 
 estado <- "Oaxaca"
 oa_inc2 <- cbind(estado, oa_inc)
@@ -73,8 +73,11 @@ za_inc2 <- cbind(estado, za_inc)
  
 # Juntar (concatenar) en una sola base 
 nueva <- rbind(dg_inc2,gto_inc2,gr_inc2,hg_inc2,ja_inc2,em_inc2,mi_inc2,mo_inc2,
-               nt_inc2,mo_inc2,oa_inc2,pu_inc2,qro_inc2,qroo_inc2,slp_inc2,sin_inc2,
+               nt_inc2,nl_inc2,oa_inc2,pu_inc2,qro_inc2,qroo_inc2,slp_inc2,sin_inc2,
                so_inc2,tb_inc2,tm_inc2,tl_inc2,vz_inc2,yu_inc2,za_inc2)
+
+
+nueva_dos <- rbind(ja_inc2,vz_inc2, n )
 
 # Para ver el total de los casos:
 totales_por_estado <- function(data){
