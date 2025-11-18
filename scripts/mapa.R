@@ -2,7 +2,6 @@
 #devtools::install_github("ropensci/rnaturalearthhires")
 #devtools::install_github("ropensci/rnaturalearth")
 
-library(dplyr)
 library(rnaturalearth)
 library(sf)
 library(ggplot2)
